@@ -11,15 +11,15 @@
                 @csrf
                 <div class="mb-4">
                     <label for="nomor_meja" class="block text-sm font-medium text-gray-700">Nomor Meja</label>
-                    <input type="number" name="nomor_meja" id="nomor_meja" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    <input type="number" name="nomor_meja" id="nomor_meja" class="mt-1 block w-full rounded-md border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
                     @error('nomor_meja')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="flex justify-end">
-                    <a href="{{ route('meja.index') }}" class="mr-4 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Batal</a>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-hijau1 border border-transparent rounded-md shadow-sm hover:bg-hijau1/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hijau1/90">Simpan</button>
+                    <a href="{{ route('meja.index') }}" class="mr-4 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-400 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Batal</a>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md shadow-sm hover:bg-orange-600/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600/90">Simpan</button>
                 </div>
             </form>
         </div>

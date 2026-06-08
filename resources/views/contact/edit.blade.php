@@ -12,7 +12,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Nama instagram</label>
                     <input type="text" name="ig" value="{{ $contact->ig }}"
-                        class="mt-1 block w-full border-gray-300 rounded-md" required />
+                        class="mt-1 block w-full border-gray-400 rounded-md" required />
                     @error('ig')
                         <span class="text-red-700  py-2 rounded">{{ $message }}</span>
                     @enderror
@@ -20,7 +20,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Nomor WhatsApp</label>
                     <input type="text" name="wa" value="{{ $contact->wa }}"
-                        class="mt-1 block w-full border-gray-300 rounded-md" required />
+                        class="mt-1 block w-full border-gray-400 rounded-md" required />
                     @error('wa')
                         <span class="text-red-700  py-2 rounded">{{ $message }}</span>
                     @enderror
@@ -28,7 +28,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Alamat Email</label>
                     <input type="text" name="email" value="{{ $contact->email }}"
-                        class="mt-1 block w-full border-gray-300 rounded-md" required />
+                        class="mt-1 block w-full border-gray-400 rounded-md" required />
                     @error('email')
                         <span class="text-red-700  py-2 rounded">{{ $message }}</span>
                     @enderror
@@ -36,7 +36,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium">facebook</label>
                     <input type="text" name="fb" value="{{ $contact->fb }}"
-                        class="mt-1 block w-full border-gray-300 rounded-md" required />
+                        class="mt-1 block w-full border-gray-400 rounded-md" required />
                     @error('fb')
                         <span class="text-red-700  py-2 rounded">{{ $message }}</span>
                     @enderror
@@ -44,7 +44,7 @@
                 {{-- <div class="mb-4">
                     <label class="block text-sm font-medium">Tahun Copyright</label>
                     <input type="text" name="tahun" value="{{ $kontak->tahun }}"
-                        class="mt-1 block w-full border-gray-300 rounded-md" required />
+                        class="mt-1 block w-full border-gray-400 rounded-md" required />
                     @error('tahun')
                         <span class="text-red-700  py-2 rounded">{{ $message }}</span>
                     @enderror

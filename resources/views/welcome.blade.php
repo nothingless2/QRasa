@@ -3,31 +3,82 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>QRasa - Akses Menu Cepat</title>
+    @php $setting = \App\Models\Setting::first(); @endphp
+    <title>{{ $setting ? $setting->store_name : 'Kantin QRasa' }} - Nikmati Sensasi Rasa Terbaik</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('img/Logo/LogoKantin.png') }}"/>
-    <!-- Scripts -->
+    <!-- Scripts & Styles -->
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     @vite(['resources/css/app.css'])
+
+    @if($setting && $setting->google_analytics_id)
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $setting->google_analytics_id }}"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '{{ $setting->google_analytics_id }}');
+        </script>
+    @endif
+
+    @if($setting && $setting->facebook_pixel_id)
+        <!-- Meta Pixel Code -->
+        <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '{{ $setting->facebook_pixel_id }}');
+        fbq('track', 'PageView');
+        </script>
+        <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id={{ $setting->facebook_pixel_id }}&ev=PageView&noscript=1"
+        /></noscript>
+        <!-- End Meta Pixel Code -->
+    @endif
 </head>
-<body class="antialiased bg-gray-50 text-gray-800">
+<body class="antialiased bg-stone-50 text-gray-800 font-sans">
 
     <!-- Navbar -->
-    <header class="absolute inset-x-0 top-0 z-50">
-        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <header class="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <nav class="flex items-center justify-between p-4 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
-                <a href="#" class="-m-1.5 p-1.5">
-                   <span class="text-3xl font-black tracking-tight text-orange-600">QRasa</span>
+                <a href="#beranda" class="-m-1.5 p-1.5 flex items-center gap-3">
+                   @if($setting && $setting->logo_path)
+                       <img src="{{ Storage::url($setting->logo_path) }}" class="h-10 w-10 rounded-full shadow-sm object-cover bg-white" alt="Logo {{ $setting->store_name }}">
+                   @else
+                       <img src="{{ asset('img/Logo/LogoKantin.png') }}" class="h-10 w-10 rounded-full shadow-sm object-cover" alt="Logo QRasa Default">
+                   @endif
+                   <span class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 tracking-tighter drop-shadow-sm" style="font-family: 'Outfit', sans-serif;">{{ $setting ? $setting->store_name : 'Kantin QRasa' }}</span>
                 </a>
             </div>
-            <div class="flex lg:flex-1 lg:justify-end">
+            <div class="hidden lg:flex lg:gap-x-8">
+                <a href="#beranda" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Beranda</a>
+                <a href="#tentang-kami" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Tentang Kami</a>
+                <a href="#menu-andalan" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Menu Andalan</a>
+                <a href="#fasilitas" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Fasilitas</a>
+                <a href="#lokasi" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Lokasi & Jam Buka</a>
+            </div>
+            <div class="flex lg:flex-1 lg:justify-end gap-3 items-center">
+                <a href="#scanner" class="hidden lg:inline-flex items-center justify-center rounded-md bg-orange-100 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-200 transition"><i class="fas fa-qrcode mr-2"></i> Pindai Meja</a>
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/menu') }}" class="text-sm font-semibold leading-6 text-gray-900">Home <span aria-hidden="true">&rarr;</span></a>
+                        <a href="{{ url('/pesan') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Dashboard <span aria-hidden="true" class="ml-2">&rarr;</span></a>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Log in <span aria-hidden="true" class="ml-2">&rarr;</span></a>
                     @endauth
                 @endif
             </div>
@@ -36,99 +87,249 @@
 
     <main>
         <!-- Hero Section -->
-        <div class="relative isolate overflow-hidden bg-gradient-to-b from-orange-100/20 pt-14">
-            <div class="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-orange-600/10 ring-1 ring-orange-50 sm:-mr-80 lg:-mr-96" aria-hidden="true"></div>
-            <div class="mx-auto max-w-7xl px-6 py-32 sm:py-40 lg:px-8">
-                <div class="mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
-                    <h1 class="max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
-                        Selamat Datang di QRasa! <br class="hidden sm:inline lg:hidden">
-                    </h1>
-                    <div class="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
-                        <p class="text-lg leading-8 text-gray-600">
-                            Akses menu cepat, praktis, dan higienis. Cukup pindai kode QR di meja Anda dan nikmati pengalaman baru memesan makanan tanpa antre!
-                        </p>
-                        <div class="mt-10 flex items-center gap-x-6">
-                            <a href="#scanner" class="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
-                                Pindai QR Sekarang
-                            </a>
-                        </div>
+        <div id="beranda" class="relative isolate overflow-hidden bg-stone-900 h-screen flex items-center">
+            <img src="{{ $setting && $setting->hero_bg ? Storage::url($setting->hero_bg) : 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' }}" alt="Cafe Background" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-40">
+            <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true"></div>
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 w-full">
+                <div class="mx-auto max-w-3xl text-center" data-aos="zoom-in">
+                    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">{{ $setting ? $setting->welcome_title : 'Nikmati Suasana Nyaman & Hidangan Lezat' }}</h1>
+                    <p class="text-lg leading-8 text-gray-300">
+                        {{ $setting ? $setting->welcome_subtitle : 'Tempat nongkrong terbaik dengan aneka kopi spesial, makanan ringan, dan berat yang siap menemani hari Anda. Pesan langsung dari meja tanpa antre.' }}
+                    </p>
+                    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="#scanner" class="rounded-full bg-orange-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-transform hover:scale-105 w-full sm:w-auto">
+                            Pesan Sekarang (Scan QR)
+                        </a>
+                        <a href="#menu-andalan" class="text-base font-semibold leading-6 text-white hover:text-orange-400 transition ml-0 sm:ml-4">Lihat Menu Rekomendasi <span aria-hidden="true">→</span></a>
                     </div>
-                    <img src="{{ asset('img/Suasana Kantin Kampus.png') }}" alt="Suasana Kantin" class="mt-10 w-full max-w-lg rounded-2xl object-cover sm:mt-16 lg:mt-0 lg:max-w-none xl:row-span-2 xl:row-end-2 xl:mt-36">
                 </div>
             </div>
-            <div class="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32"></div>
         </div>
 
-        <!-- QR Scanner Section -->
-        <div id="scanner" class="bg-white py-24 sm:py-32">
+        <!-- Tentang Kami Section -->
+        <div id="tentang-kami" class="overflow-hidden bg-white py-24 sm:py-32">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl sm:text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Pindai Kode QR</h2>
-                    <p class="mt-6 text-lg leading-8 text-gray-600">
-                        Arahkan kamera Anda ke kode QR yang ada di meja untuk melihat menu dan memesan.
-                    </p>
-                </div>
-                <div class="mx-auto mt-16 max-w-sm rounded-3xl bg-orange-50 p-6 text-center shadow-lg ring-1 ring-inset ring-orange-900/5 lg:p-8">
-                    <div id="reader" class="w-full rounded-lg"></div>
-                    <button id="scanBtn" class="mt-6 w-full rounded-md bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 flex items-center justify-center gap-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.776 48.776 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
-                        </svg>
-                        Buka Kamera
-                    </button>
+                <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
+                    <div class="lg:pr-8 lg:pt-4">
+                        <div class="lg:max-w-lg" data-aos="fade-right">
+                            <h2 class="text-base font-semibold leading-7 text-orange-600">Kisah Kami</h2>
+                            <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">{{ $setting->about_title ?? 'Lebih Dari Sekadar Tempat Makan' }}</p>
+                            <p class="mt-6 text-lg leading-8 text-stone-600 whitespace-pre-line">{{ $setting->about_text ?? "Berdiri dengan visi untuk menyajikan masakan berkualitas dengan harga sahabat. Kami menggunakan bahan-bahan segar setiap harinya untuk memastikan setiap gigitan dan tegukan memberikan kepuasan tersendiri.\n\nKini kami mengadopsi teknologi digital untuk masa depan pesanan, sehingga pelanggan hanya perlu memindai QR Code di meja, memilih menu, dan pesanan akan langsung diantar oleh pelayan kami yang ramah." }}</p>
+                        </div>
+                    </div>
+                    <img src="{{ $setting && $setting->about_image ? Storage::url($setting->about_image) : 'https://cdn.pixabay.com/photo/2016/08/21/14/49/cafe-1609795_1280.jpg' }}" alt="Tentang QRasa" class="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-xl ring-1 ring-stone-400/10" data-aos="fade-left">
                 </div>
             </div>
+        </div>
+
+        <!-- Menu Andalan (Featured Menu) -->
+        <div id="menu-andalan" class="bg-stone-50 py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl text-center" data-aos="fade-up">
+                    <h2 class="text-base font-semibold leading-7 text-orange-600">Spesial Hari Ini</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Menu Terfavorit Pelanggan Kami</p>
+                </div>
+                <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+
+                    @php
+                        $menuCount = $setting->featured_menu_count ?? 3;
+                        $menus = \App\Models\menu::inRandomOrder()->take($menuCount)->get();
+                    @endphp
+
+                    @forelse($menus as $index => $item)
+                        <!-- Item -->
+                        <div class="flex flex-col bg-white rounded-3xl shadow-sm ring-1 ring-stone-200 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                            @if($item->gambar)
+                                <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->nama }}" class="h-48 w-full object-cover">
+                            @else
+                                <div class="h-48 w-full bg-stone-100 flex items-center justify-center text-stone-400">
+                                    <i class="fas fa-utensils text-4xl"></i>
+                                </div>
+                            @endif
+                            <div class="p-6 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold text-stone-900">{{ $item->nama }}</h3>
+                                    <p class="mt-2 text-sm text-stone-600 line-clamp-3">{{ $item->deskripsi }}</p>
+                                </div>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-lg font-bold text-orange-600">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-10 text-stone-500">
+                            Belum ada menu yang ditambahkan.
+                        </div>
+                    @endforelse
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Fasilitas Section -->
+        <div id="fasilitas" class="bg-white py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl lg:text-center" data-aos="fade-up">
+                    <h2 class="text-base font-semibold leading-7 text-orange-600">Berbagai Fasilitas Terbaik</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Mengapa Memilih Tempat Kami?</p>
+                </div>
+                <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+                    <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="100">
+                            <dt class="text-base font-bold leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-wifi text-orange-600 text-lg"></i>
+                                </div>
+                                Wi-Fi Kecepatan Tinggi
+                            </dt>
+                            <dd class="mt-2 text-base leading-7 text-stone-600">Koneksi internet stabil secara gratis cocok untuk menemani rapat online atau waktu nugas Anda.</dd>
+                        </div>
+                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="200">
+                            <dt class="text-base font-bold leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-couch text-orange-600 text-lg"></i>
+                                </div>
+                                Area Nyaman & Area Merokok
+                            </dt>
+                            <dd class="mt-2 text-base leading-7 text-stone-600">Pemisahan area indoor ber-AC penuh dan area outdoor untuk merokok yang sejuk dipayungi daun-daun hijau.</dd>
+                        </div>
+                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="300">
+                            <dt class="text-base font-bold leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-music text-orange-600 text-lg"></i>
+                                </div>
+                                Live Music Mingguan
+                            </dt>
+                            <dd class="mt-2 text-base leading-7 text-stone-600">Nikmati alunan musik akustik secara langsung setiap malam akhir pekan untuk memeriahkan suasana.</dd>
+                        </div>
+                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="400">
+                            <dt class="text-base font-bold leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-motorcycle text-orange-600 text-lg"></i>
+                                </div>
+                                Parkir Luas & Aman
+                            </dt>
+                            <dd class="mt-2 text-base leading-7 text-stone-600">Tersedia area parkir yang memadai dengan pengawasan cctv 24 jam dengan jasa petugas parkir ahli.</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Scanner Interactive Box -->
+        <div id="scanner" class="bg-orange-600 py-16 sm:py-24 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 text-center text-white" data-aos="zoom-in">
+                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Pesan Makanan Tanpa Antre</h2>
+                <p class="mt-6 text-lg leading-8 text-orange-50 max-w-2xl mx-auto">
+                    Arahkan kamera ke meja Anda, atau klik tombol di bawah untuk membuka pemindai bawaan sistem kami.
+                </p>
+                <div class="mx-auto mt-10 max-w-sm bg-white rounded-3xl p-6 text-stone-900 shadow-xl" data-aos="flip-up" data-aos-delay="200">
+                    <div id="reader" class="w-full rounded-lg text-left"></div>
+                    <button id="scanBtn" class="mt-4 w-full rounded-full bg-orange-600 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500 flex items-center justify-center gap-x-2 transition shadow-md">
+                        <i class="fas fa-camera text-lg"></i> Buka Kamera Scanner
+                    </button>
+                    <!-- Loading State / Additional UI if needed -->
+                    <p class="text-xs text-stone-500 mt-4">Pastikan Anda memberikan izin kamera untuk memindai.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lokasi & Jam Buka Section -->
+        <div id="lokasi" class="bg-stone-50 py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-base font-semibold leading-7 text-orange-600">Kunjungi Kami</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Lokasi & Jam Operasional</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+                    <!-- Google Maps Iframe (Kiri, Diperbesar) -->
+                    <div class="lg:col-span-7 rounded-3xl overflow-hidden shadow-lg h-96 lg:h-full min-h-[400px] lg:min-h-[500px]" data-aos="fade-right">
+                        @if($setting && $setting->map_iframe)
+                            <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full">
+                                {!! $setting->map_iframe !!}
+                            </div>
+                        @else
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126938.16701831835!2d106.75628509373204!3d-6.155457850550117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x100c5e82dd4b820!2sJakarta%2CSouth%20Jakarta%20City%2C%20Jakarta!5e0!3m2!1sen!2sid!4v1700632599665!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        @endif
+                    </div>
+
+                    <!-- Jam Operasional & Kontak (Kanan, Lebih Rapi) -->
+                    <div class="lg:col-span-5 bg-white rounded-3xl shadow-sm ring-1 ring-stone-200 p-6 sm:p-8 flex flex-col justify-center" data-aos="fade-left">
+                        <h3 class="text-xl font-bold text-stone-900 mb-4 border-b pb-3"><i class="far fa-clock text-orange-600 mr-2"></i> Jam Buka</h3>
+                        <ul class="space-y-3 text-stone-700 text-sm sm:text-base">
+                            @php
+                                $hours = ($setting && is_array($setting->operational_hours)) ? $setting->operational_hours : [
+                                    ['day' => 'Senin - Kamis', 'time' => '10:00 - 22:00'],
+                                    ['day' => 'Jumat', 'time' => '13:00 - 23:00'],
+                                    ['day' => 'Sabtu - Minggu', 'time' => '08:00 - 23:30']
+                                ];
+                            @endphp
+                            @foreach($hours as $index => $hour)
+                                @if(!empty($hour['day']))
+                                <li class="flex justify-between items-center py-2 border-b border-stone-100 border-dashed {{ $index === count($hours) - 1 ? 'text-orange-600' : '' }}">
+                                    <span>{{ $hour['day'] }}</span>
+                                    <span class="font-bold">{{ $hour['time'] }}</span>
+                                </li>
+                                @endif
+                            @endforeach
+                        </ul>
+
+                        <h3 class="text-xl font-bold text-stone-900 mb-4 border-b pb-3 mt-8"><i class="fas fa-phone-alt text-orange-600 mr-2"></i> Kontak Reservasi</h3>
+                        <div class="space-y-3 text-stone-700 text-sm sm:text-base">
+                            <p class="flex items-start gap-3"><i class="fab fa-whatsapp text-green-500 text-lg w-5 mt-0.5"></i> <span>+{{ $setting->contact_whatsapp ?? '62 822 5555 7777' }}</span></p>
+                            <p class="flex items-start gap-3"><i class="fab fa-instagram text-pink-500 text-lg w-5 mt-0.5"></i> <span>{{ $setting->contact_instagram ?? '@qrasa.cafe' }}</span></p>
+                            <p class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-red-500 text-lg w-5 mt-0.5"></i> <span>{{ $setting->store_address ?? 'Jl. Jend. Sudirman Kav 1, Jakarta Selatan' }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WhatsApp Floating Button -->
+            @php
+                $waLink = $setting && $setting->contact_whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $setting->contact_whatsapp) : 'https://wa.me/6282255557777';
+            @endphp
+            <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 p-4 text-white shadow-lg hover:bg-green-600 hover:scale-110 transition-transform duration-300 flex items-center justify-center group" aria-label="Reservasi WhatsApp">
+                <i class="fab fa-whatsapp text-4xl"></i>
+            </a>
         </div>
     </main>
 
-    <footer class="bg-gradient-to-r from-orange-500 to-orange-600" aria-labelledby="footer-heading">
+    <footer class="bg-gradient-to-r from-orange-500 to-orange-600 border-t border-orange-400" aria-labelledby="footer-heading">
         <h2 id="footer-heading" class="sr-only">Footer</h2>
-        <div class="mx-auto max-w-7xl px-6 pb-8 pt-12 sm:pt-16 lg:px-8">
-            <div class="md:flex md:justify-between">
-                <div class="space-y-8">
-                    <img class="h-12 w-auto rounded-xl" src="{{ asset('img/Logo/LogoKantin.png') }}" alt="QRASA">
-                    <p class="text-sm leading-6 text-orange-50">Akses menu cepat, praktis, dan higienis. <br> Nikmati pengalaman baru memesan tanpa antre.</p>
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-white hover:text-orange-100">
-                            <span class="sr-only">Facebook</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <a href="#" class="text-white hover:text-orange-100">
-                            <span class="sr-only">Instagram</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363.416 2.427-.465C9.53 2.013 9.885 2 12.315 2zM12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm6.406-11.845a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <a href="#" class="text-white hover:text-orange-100">
-                            <span class="sr-only">Twitter</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                        </a>
-                    </div>
+        <div class="mx-auto max-w-7xl px-6 pb-8 pt-12 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:order-2 space-x-6">
+                    <a href="#" class="text-orange-100 hover:text-white transition">
+                        <span class="sr-only">Facebook</span>
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-orange-100 hover:text-white transition">
+                        <span class="sr-only">Instagram</span>
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-orange-100 hover:text-white transition">
+                        <span class="sr-only">Tiktok</span>
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
                 </div>
-                <div class="mt-16 grid grid-cols-2 gap-8 md:mt-0">
-                    <div class="md:grid md:grid-cols-2 md:gap-8">
-                        <div>
-                            <h3 class="text-sm font-semibold leading-6 text-white">Navigasi</h3>
-                            <ul role="list" class="mt-6 space-y-4">
-                                <li><a href="#" class="text-sm leading-6 text-orange-50 hover:text-white">Beranda</a></li>
-                                <li><a href="#scanner" class="text-sm leading-6 text-orange-50 hover:text-white">Scanner</a></li>
-                            </ul>
-                        </div>
-                        <div class="mt-10 md:mt-0">
-                            <h3 class="text-sm font-semibold leading-6 text-white">Lainnya</h3>
-                            <ul role="list" class="mt-6 space-y-4">
-                                <li><a href="#" class="text-sm leading-6 text-orange-50 hover:text-white">Tentang Kami</a></li>
-                                <li><a href="#" class="text-sm leading-6 text-orange-50 hover:text-white">Kontak</a></li>
-                            </ul>
-                        </div>
+                <div class="mt-8 md:order-1 md:mt-0 flex flex-col items-center md:items-start">
+                    <div class="flex items-center gap-2 mb-2">
+                        @if($setting && $setting->logo_path)
+                            <img src="{{ Storage::url($setting->logo_path) }}" class="h-8 w-8 rounded-full object-cover bg-white" alt="Logo">
+                        @else
+                            <img src="{{ asset('img/Logo/LogoKantin.png') }}" class="h-8 w-8 rounded-full object-cover bg-white p-1" alt="Logo">
+                        @endif
+                        <span class="text-lg font-bold text-white">Kantin QRasa</span>
                     </div>
+                    <p class="text-center md:text-left text-sm leading-5 text-orange-100">
+                        {!! $setting ? $setting->welcome_footer : '&copy; 2026 Kantin QRasa. All rights reserved.' !!}
+                    </p>
                 </div>
-            </div>
-            <div class=" border-t border-putih/50 pt-8 sm:mt-16 lg:mt-20">
-                <p class="text-xs leading-5 text-orange-100">&copy; 2025 QRASA. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
 
     <!-- QR Scanner Script -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -137,7 +338,6 @@
         const readerDiv = document.getElementById('reader');
 
         cameraButton.addEventListener('click', () => {
-            // Hide the button and show the reader
             cameraButton.style.display = 'none';
             readerDiv.style.display = 'block';
 
@@ -149,23 +349,21 @@
                         cameraId,
                         { fps: 10, qrbox: { width: 250, height: 250 } },
                         (decodedText, decodedResult) => {
-                            // Stop scanning and redirect
                             html5QrCode.stop().then(() => {
-                                // Construct the URL safely
-                                const url = new URL('/menu', window.location.origin);
-                                url.searchParams.append('token', decodedText);
-                                window.location.href = url.toString();
+                                try {
+                                    const scannedUrl = new URL(decodedText);
+                                    window.location.href = scannedUrl.toString();
+                                } catch (e) {
+                                    const url = new URL('/menu', window.location.origin);
+                                    url.searchParams.append('meja_id', decodedText);
+                                    window.location.href = url.toString();
+                                }
                             }).catch(err => console.error("Failed to stop QR code scanner.", err));
                         },
-                        (errorMessage) => {
-                            // This callback is called when a QR code is not found.
-                            // You can choose to do nothing here or log for debugging.
-                            // console.warn(`QR error: ${errorMessage}`);
-                        }
+                        (errorMessage) => { }
                     ).catch(err => {
                         console.error(`Unable to start scanning, error: ${err}`);
                         alert(`Error: Tidak dapat memulai kamera. Pastikan Anda memberikan izin kamera.`);
-                        // Show the button again if scanning fails to start
                         cameraButton.style.display = 'flex';
                         readerDiv.style.display = 'none';
                     });
@@ -183,5 +381,12 @@
         readerDiv.style.display = 'none';
     </script>
 
+    <!-- Initialize AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 50 });
+        });
+    </script>
 </body>
 </html>

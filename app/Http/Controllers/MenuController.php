@@ -51,24 +51,43 @@ class MenuController extends Controller
         $selectedKategori = $request->kategori;
         $menu = $query->get();
 
-        // Get order history if meja_id exists
+        // Pindahkan transformasi data ke controller
+        $formattedMenu = $menu->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->nama,
+                'description' => $item->deskripsi,
+                'price' => $item->harga,
+                'discount' => $item->diskon ?? 0,
+                'image' => asset('storage/' . $item->gambar),
+                'stok' => $item->stok,
+                'category' => $item->kategori ?? 'Lainnya',
+            ];
+        });
+
         if ($request->has('meja_id')) {
             $meja = \App\Models\meja::find($request->meja_id);
             if ($meja) {
-                $historyPesanan = $meja->pesans()->with('menus')->latest()->get();
+                // Hanya ambil pesanan HARI INI yang BELUM DIBAYAR untuk meja ini
+                $historyPesanan = $meja->pesans()
+                    ->whereDate('created_at', \Carbon\Carbon::today())
+                    ->where('status_pembayaran', '!=', 'sudah dibayar')
+                    ->with('menus')
+                    ->latest()
+                    ->get();
             }
         }
 
         if ($request->ajax()) {
             return response()->json([
-                'menu' => $menu,
+                'menu' => $formattedMenu, // Kembalikan data yang sudah diformat
                 'kategori' => $kategori,
                 'selectedKategori' => $selectedKategori,
                 'historyPesanan' => $historyPesanan,
             ]);
         }
 
-        return view('menu', compact('menu', 'kategori', 'selectedKategori', 'historyPesanan'));
+        return view('menu', compact('formattedMenu', 'kategori', 'selectedKategori', 'historyPesanan'));
     }
 
     public function create()
@@ -86,7 +105,7 @@ class MenuController extends Controller
             'nama'      => 'required|string|max:255',
             'harga'     => 'required|numeric|min:0',
             'stok'      => 'required|integer|min:0',
-            'diskon'    => 'nullable|integer|min:0|max:100',
+             'diskon'    => 'nullable|integer|min:0|max:100',
             'kategori'  => 'required|string',
             'deskripsi' => 'required|string',
             'gambar'    => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:3048',

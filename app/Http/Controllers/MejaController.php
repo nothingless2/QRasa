@@ -59,6 +59,11 @@ class MejaController extends Controller
         return view('meja.show', compact('meja'));
     }
 
+    public function print(Meja $meja)
+    {
+        return view('meja.print', compact('meja'));
+    }
+
     public function edit(Meja $meja)
     {
         return view('meja.edit', compact('meja'));
@@ -86,5 +91,14 @@ class MejaController extends Controller
         $meja->delete();
 
         return redirect()->route('meja.index')->with('success', 'Meja berhasil dihapus.');
+    }
+
+    /**
+     * Print all table QR codes in a grid layout for batch printing.
+     */
+    public function printAll()
+    {
+        $mejas = Meja::orderBy('nomor_meja', 'asc')->get();
+        return view('meja.print-all', compact('mejas'));
     }
 }

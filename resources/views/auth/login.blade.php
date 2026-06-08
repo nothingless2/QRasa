@@ -29,9 +29,6 @@
 
                 <div class="text-left">
                     <h2 class="text-2xl font-bold tracking-tight text-gray-900">Login ke Akun Anda</h2>
-                    {{-- <p class="mt-2 text-sm text-gray-600">
-                        Belum punya akun? <a href="{{ route('register') }}" class="font-medium text-orange-600 hover:text-orange-500">Daftar di sini</a>
-                    </p> --}}
                 </div>
 
                 <!-- Session Status -->
@@ -61,7 +58,7 @@
                     <div class="flex items-center justify-between">
                         <!-- Remember Me -->
                         <div class="flex items-center">
-                            <input id="remember_me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-600" name="remember">
+                            <input id="remember_me" type="checkbox" class="h-4 w-4 rounded border-gray-400 text-orange-600 focus:ring-orange-600" name="remember">
                             <label for="remember_me" class="ms-2 block text-sm text-gray-900">{{ __('Remember me') }}</label>
                         </div>
 

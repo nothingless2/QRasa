@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-hijau1 border-gray-100">
+<nav x-data="{ open: false }" class="bg-orange-600 border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-end h-16">
@@ -6,14 +6,14 @@
             <!-- Low Stock Notification -->
             @auth
             <div x-data="{ lowStockOpen: false }" x-init="lowStockOpen = false" class="relative hidden sm:flex sm:items-center mr-4">
-                <button @click="lowStockOpen = ! lowStockOpen" class="relative p-2 rounded-full text-putih hover:bg-hijau1/80 focus:ring-putih transition-all duration-200">
+                <button @click="lowStockOpen = ! lowStockOpen" class="relative p-2 rounded-full text-putih hover:bg-orange-600/80 focus:ring-putih transition-all duration-200">
                     <i class="fas fa-bell text-xl"></i>
                     @if (Auth::user()->role === 'admin' && isset($adminLowStockMenus) && $adminLowStockMenus->count() > 0)
-                        <span class="absolute top-2 right-1 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-hijau1">
+                        <span class="absolute top-2 right-1 transform translate-x-1/2 -translate-y-1/2 bg-white text-red-600 shadow-md border border-red-100 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                             {{ $adminLowStockMenus->count() }}
                         </span>
                     @elseif (isset($lowStockMenus) && $lowStockMenus->count() > 0)
-                        <span class="absolute top-2 right-1 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-hijau1">
+                        <span class="absolute top-2 right-1 transform translate-x-1/2 -translate-y-1/2 bg-white text-red-600 shadow-md border border-red-100 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                             {{ $lowStockMenus->count() }}
                         </span>
                     @endif
@@ -22,7 +22,7 @@
                 <!-- Low Stock Dropdown Content -->
                 <div x-show="lowStockOpen" x-cloak @click.away="lowStockOpen = false" class="absolute z-50 mt-44 w-80 rounded-md shadow-lg  right-0 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
                     <div class="py-1">
-                        <div class="block px-4 py-2 text-xs text-gray-500 font-semibold border-b border-gray-100">
+                        <div class="block px-4 py-2 text-xs text-gray-700 font-semibold border-b border-gray-100">
                             Peringatan Stok Rendah
                         </div>
                         @if (Auth::user()->role === 'admin' && isset($adminLowStockMenus))
@@ -61,7 +61,6 @@
                         <button class="flex items-center text-sm font-medium text-white hover:text-gray-200 focus:outline-none transition duration-150 ease-in-out">
                             @php
                                 $avatarPath = Auth::user()->avatar;
-                                // Hapus 'public/' dari path jika ada, untuk konsistensi
                                 if (str_starts_with($avatarPath, 'public/')) {
                                     $avatarPath = substr($avatarPath, 7);
                                 }
@@ -101,7 +100,7 @@
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-700 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -136,10 +135,10 @@
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        <div class="pt-4 pb-1 border-t border-gray-300">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-sm text-gray-700">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

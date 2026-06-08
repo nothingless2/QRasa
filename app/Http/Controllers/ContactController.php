@@ -33,7 +33,6 @@ class ContactController extends Controller
             'wa'    => 'required|string|max:255',
             'fb'    => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            // 'tahun' => 'required|string|max:255',
         ]);
 
         $contact        = new contact();
@@ -41,7 +40,6 @@ class ContactController extends Controller
         $contact->wa    = $request->wa;
         $contact->email = $request->email;
         $contact->fb    = $request->fb;
-        //  $contacts->tahun = $request->tahun;
 
         $contact->save();
         return redirect()->route('contact.index')->with('success', 'Kontak berhasil ditambahkan!');
@@ -75,7 +73,6 @@ class ContactController extends Controller
             'wa'    => 'required|string|max:255',
             'fb'    => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            // 'tahun' => 'required|string|max:255',
         ]);
 
         $contact        = new Contact();
@@ -83,7 +80,6 @@ class ContactController extends Controller
         $contact->wa    = $request->wa;
         $contact->email = $request->email;
         $contact->fb    = $request->fb;
-        //  $contacts->tahun = $request->tahun;
 
         $contact->save();
         return redirect()->route('contact.index')->with('success', 'Kontak berhasil ditambahkan!');

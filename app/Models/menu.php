@@ -17,6 +17,6 @@ class menu extends Model
 
     public function pesans()
     {
-        return $this->belongsToMany(Pesan::class)->withPivot('quantity');
+        return $this->belongsToMany(Pesan::class)->withPivot('quantity', 'notes');
     }
 }

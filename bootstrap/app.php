@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->web(append: [
         HandleInertiaRequests::class,
     ]);
+
+    // Register role-based middleware alias
+    $middleware->alias([
+        'role' => \App\Http\Middleware\CheckRole::class,
+    ]);
 })
     ->withExceptions(function (Exceptions $exceptions) {
         //

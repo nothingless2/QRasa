@@ -16,16 +16,16 @@
                 <div class="flex items-center space-x-4">
                     <div class="relative">
                         <input type="text" id="searchInput" placeholder="Cari menu..."
-                            class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hijau1 focus:border-hijau1 text-sm"
+                            class="w-64 pl-10 pr-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-600 focus:border-orange-600 text-sm"
                             onkeyup="searchTable()">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
+                            <i class="fas fa-search text-gray-600"></i>
                         </div>
                     </div>
                     <div>
                         <label for="kategori_filter" class="sr-only">Filter by Kategori</label>
                         <select id="kategori_filter" name="kategori_filter" onchange="window.location.href=this.value;"
-                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-hijau1 focus:border-hijau1 sm:text-sm rounded-lg">
+                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-400 focus:outline-none focus:ring-orange-600 focus:border-orange-600 sm:text-sm rounded-lg">
                             <option value="{{ route('menu.index') }}">Semua Kategori</option>
                             @foreach ($kategori as $kat)
                                 <option value="{{ route('menu.index', ['kategori' => $kat]) }}" @if(request('kategori') == $kat) selected @endif>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <a href="{{ route('menu.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-hijau1 text-white rounded-lg hover:bg-hijau1/90 transition-colors duration-150">
+                    class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-600/90 transition-colors duration-150">
                     <i class="fas fa-plus mr-2"></i>
                     <span>Tambah Menu</span>
                 </a>
@@ -64,14 +64,14 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gambar</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Menu</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diskon</th>
-                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Gambar</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Nama Menu</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Deskripsi</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Harga</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kategori</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Stok</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Diskon</th>
+                            <th class="px-6 py-3  text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -87,7 +87,7 @@
                                 <div class="text-sm font-medium text-gray-900">{{ $item->nama }}</div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-500">
+                                <div class="text-sm text-gray-700">
                                     {!! Str::limit($item->deskripsi, 100) !!}
                                 </div>
                             </td>
