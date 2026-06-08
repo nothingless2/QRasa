@@ -3,7 +3,7 @@
         <x-admin-sidebar />
 
         <!-- Main Content -->
-        <main class="flex-1 ml-64 p-8">
+        <main class="flex-1 lg:ml-64 p-4 lg:p-8">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Daftar User</h1>
@@ -148,3 +148,4 @@
         }
     </script>
 </x-app-layout>
+

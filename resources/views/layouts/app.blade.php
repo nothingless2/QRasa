@@ -22,7 +22,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-100 relative">
+            <!-- Sidebar Overlay -->
+            <div x-cloak x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden backdrop-blur-sm transition-opacity"></div>
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -40,10 +42,5 @@
             </main>
         </div>
         @stack('scripts')
-        <script>
-            document.getElementById('sidebar-toggle').addEventListener('click', function() {
-                document.getElementById('admin-sidebar').classList.toggle('hidden');
-            });
-        </script>
     </body>
 </html>

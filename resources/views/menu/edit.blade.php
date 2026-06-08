@@ -3,7 +3,7 @@
         <x-admin-sidebar />
 
         <!-- Main Content -->
-        <main class="flex-1 md:ml-64 p-4 md:p-8">
+        <main class="flex-1 lg:ml-64 p-4 lg:p-8">
             <!-- Header -->
             <div class="mb-8">
                 <div class="flex items-center justify-between">
@@ -154,3 +154,4 @@
         }
     </script>
 </x-app-layout>
+

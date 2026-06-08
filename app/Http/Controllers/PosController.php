@@ -33,7 +33,7 @@ class PosController extends Controller
         $mejas = Meja::orderBy('nomor_meja', 'asc')->get();
 
         // Get Unified Active Orders for the sliding panel (Limited to 60 for massive performance boost)
-        $activeOrders = \App\Models\Pesan::with(['menus', 'meja', 'user'])
+        $activeOrders = \App\Models\Pesan::with(['menus', 'meja'])
             ->whereDate('created_at', today())
             ->orderBy('created_at', 'desc')
             ->limit(60)

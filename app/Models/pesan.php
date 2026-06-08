@@ -8,17 +8,12 @@ class Pesan extends Model
 {
     protected $fillable = [
         'total',
-        'user_id',
         'status',
         'payment_method',
         'status_pembayaran',
         'meja_id',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function meja()
     {

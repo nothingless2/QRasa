@@ -69,7 +69,7 @@ class DashboardController extends Controller
         $adminLowStockMenus = Menu::where('stok', '<', 10)->orderBy('stok', 'asc')->get();
 
         // Recent Orders
-        $pesanans = \App\Models\Pesan::with('user')->latest()->paginate(5);
+        $pesanans = \App\Models\Pesan::latest()->paginate(5);
 
         // Chart Data with Date Filter
         $chartPeriod = $request->input('chart_period', 'this_month');
@@ -184,7 +184,7 @@ class DashboardController extends Controller
         }
 
         $period = $request->input('period', 'this_month');
-        $baseQuery = \App\Models\Pesan::with(['menus', 'meja', 'user']);
+        $baseQuery = \App\Models\Pesan::with(['menus', 'meja']);
 
         switch ($period) {
             case 'this_week':
@@ -234,7 +234,7 @@ class DashboardController extends Controller
         }
 
         $period = $request->input('period', 'this_month');
-        $baseQuery = \App\Models\Pesan::with(['menus', 'meja', 'user']);
+        $baseQuery = \App\Models\Pesan::with(['menus', 'meja']);
 
         switch ($period) {
             case 'this_week':

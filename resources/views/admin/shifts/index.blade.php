@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-admin-sidebar />
 
-    <main class="flex-1 ml-64 p-8 bg-gray-50 min-h-screen">
+    <main class="flex-1 lg:ml-64 p-4 lg:p-8 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
@@ -109,3 +109,4 @@
         </div>
     </main>
 </x-app-layout>
+

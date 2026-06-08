@@ -1,7 +1,7 @@
 @props(['title' => 'Menu Management'])
 
 <!-- Sidebar -->
-<div {{ $attributes->merge(['class' => 'w-64 bg-white shadow-lg fixed left-0 top-0 bottom-0 overflow-y-auto flex flex-col']) }}>
+<div :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}" {{ $attributes->merge(['class' => 'w-64 bg-white shadow-lg fixed left-0 top-0 bottom-0 overflow-y-auto flex flex-col transform lg:translate-x-0 transition-transform duration-300 z-50']) }} x-cloak>
     <!-- Sidebar Header dengan Logo -->
     <div class="p-6 flex items-center space-x-4">
         <div>

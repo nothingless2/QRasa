@@ -65,6 +65,7 @@
                    <span class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 tracking-tighter drop-shadow-sm" style="font-family: 'Outfit', sans-serif;">{{ $setting ? $setting->store_name : 'Kantin QRasa' }}</span>
                 </a>
             </div>
+
             <div class="hidden lg:flex lg:gap-x-8">
                 <a href="#beranda" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Beranda</a>
                 <a href="#tentang-kami" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Tentang Kami</a>
@@ -72,13 +73,15 @@
                 <a href="#fasilitas" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Fasilitas</a>
                 <a href="#lokasi" class="text-sm font-bold leading-6 text-gray-900 hover:text-orange-600 transition">Lokasi & Jam Buka</a>
             </div>
-            <div class="flex lg:flex-1 lg:justify-end gap-3 items-center">
+
+            <!-- Right Actions -->
+            <div class="flex flex-1 justify-end gap-2 sm:gap-3 items-center">
                 <a href="#scanner" class="hidden lg:inline-flex items-center justify-center rounded-md bg-orange-100 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-200 transition"><i class="fas fa-qrcode mr-2"></i> Pindai Meja</a>
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/pesan') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Dashboard <span aria-hidden="true" class="ml-2">&rarr;</span></a>
+                        <a href="{{ url('/pesan') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Dashboard <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
                     @else
-                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Log in <span aria-hidden="true" class="ml-2">&rarr;</span></a>
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Log in <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
                     @endauth
                 @endif
             </div>
@@ -92,8 +95,8 @@
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true"></div>
             <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 w-full">
                 <div class="mx-auto max-w-3xl text-center" data-aos="zoom-in">
-                    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">{{ $setting ? $setting->welcome_title : 'Nikmati Suasana Nyaman & Hidangan Lezat' }}</h1>
-                    <p class="text-lg leading-8 text-gray-300">
+                    <h1 class="text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl mb-4 sm:mb-6">{{ $setting ? $setting->welcome_title : 'Nikmati Suasana Nyaman & Hidangan Lezat' }}</h1>
+                    <p class="text-base sm:text-lg leading-7 sm:leading-8 text-gray-300">
                         {{ $setting ? $setting->welcome_subtitle : 'Tempat nongkrong terbaik dengan aneka kopi spesial, makanan ringan, dan berat yang siap menemani hari Anda. Pesan langsung dari meja tanpa antre.' }}
                     </p>
                     <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -113,8 +116,8 @@
                     <div class="lg:pr-8 lg:pt-4">
                         <div class="lg:max-w-lg" data-aos="fade-right">
                             <h2 class="text-base font-semibold leading-7 text-orange-600">Kisah Kami</h2>
-                            <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">{{ $setting->about_title ?? 'Lebih Dari Sekadar Tempat Makan' }}</p>
-                            <p class="mt-6 text-lg leading-8 text-stone-600 whitespace-pre-line">{{ $setting->about_text ?? "Berdiri dengan visi untuk menyajikan masakan berkualitas dengan harga sahabat. Kami menggunakan bahan-bahan segar setiap harinya untuk memastikan setiap gigitan dan tegukan memberikan kepuasan tersendiri.\n\nKini kami mengadopsi teknologi digital untuk masa depan pesanan, sehingga pelanggan hanya perlu memindai QR Code di meja, memilih menu, dan pesanan akan langsung diantar oleh pelayan kami yang ramah." }}</p>
+                            <p class="mt-2 text-2xl font-bold tracking-tight text-stone-900 sm:text-4xl">{{ $setting->about_title ?? 'Lebih Dari Sekadar Tempat Makan' }}</p>
+                            <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-stone-600 whitespace-pre-line">{{ $setting->about_text ?? "Berdiri dengan visi untuk menyajikan masakan berkualitas dengan harga sahabat. Kami menggunakan bahan-bahan segar setiap harinya untuk memastikan setiap gigitan dan tegukan memberikan kepuasan tersendiri.\n\nKini kami mengadopsi teknologi digital untuk masa depan pesanan, sehingga pelanggan hanya perlu memindai QR Code di meja, memilih menu, dan pesanan akan langsung diantar oleh pelayan kami yang ramah." }}</p>
                         </div>
                     </div>
                     <img src="{{ $setting && $setting->about_image ? Storage::url($setting->about_image) : 'https://cdn.pixabay.com/photo/2016/08/21/14/49/cafe-1609795_1280.jpg' }}" alt="Tentang QRasa" class="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-xl ring-1 ring-stone-400/10" data-aos="fade-left">
@@ -127,9 +130,9 @@
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl text-center" data-aos="fade-up">
                     <h2 class="text-base font-semibold leading-7 text-orange-600">Spesial Hari Ini</h2>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Menu Terfavorit Pelanggan Kami</p>
+                    <p class="mt-2 text-2xl font-bold tracking-tight text-stone-900 sm:text-4xl">Menu Terfavorit Pelanggan Kami</p>
                 </div>
-                <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <div class="mx-auto mt-12 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 sm:gap-y-12 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 
                     @php
                         $menuCount = $setting->featured_menu_count ?? 3;
@@ -138,21 +141,21 @@
 
                     @forelse($menus as $index => $item)
                         <!-- Item -->
-                        <div class="flex flex-col bg-white rounded-3xl shadow-sm ring-1 ring-stone-200 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        <div class="flex flex-col bg-white rounded-2xl sm:rounded-3xl shadow-sm ring-1 ring-stone-200 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                             @if($item->gambar)
-                                <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->nama }}" class="h-48 w-full object-cover">
+                                <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->nama }}" class="h-32 sm:h-48 w-full object-cover">
                             @else
-                                <div class="h-48 w-full bg-stone-100 flex items-center justify-center text-stone-400">
-                                    <i class="fas fa-utensils text-4xl"></i>
+                                <div class="h-32 sm:h-48 w-full bg-stone-100 flex items-center justify-center text-stone-400">
+                                    <i class="fas fa-utensils text-3xl sm:text-4xl"></i>
                                 </div>
                             @endif
-                            <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div class="p-3 sm:p-6 flex-1 flex flex-col justify-between">
                                 <div>
-                                    <h3 class="text-xl font-bold text-stone-900">{{ $item->nama }}</h3>
-                                    <p class="mt-2 text-sm text-stone-600 line-clamp-3">{{ $item->deskripsi }}</p>
+                                    <h3 class="text-sm sm:text-xl font-bold text-stone-900 line-clamp-2">{{ $item->nama }}</h3>
+                                    <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-stone-600 line-clamp-2 sm:line-clamp-3">{{ $item->deskripsi }}</p>
                                 </div>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <span class="text-lg font-bold text-orange-600">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+                                <div class="mt-2 sm:mt-4 flex items-center justify-between">
+                                    <span class="text-sm sm:text-lg font-bold text-orange-600">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -171,45 +174,45 @@
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl lg:text-center" data-aos="fade-up">
                     <h2 class="text-base font-semibold leading-7 text-orange-600">Berbagai Fasilitas Terbaik</h2>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Mengapa Memilih Tempat Kami?</p>
+                    <p class="mt-2 text-2xl font-bold tracking-tight text-stone-900 sm:text-4xl">Mengapa Memilih Tempat Kami?</p>
                 </div>
-                <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-                    <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="100">
-                            <dt class="text-base font-bold leading-7 text-stone-900">
-                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
-                                    <i class="fas fa-wifi text-orange-600 text-lg"></i>
+                <div class="mx-auto mt-10 sm:mt-16 max-w-2xl lg:mt-24 lg:max-w-4xl">
+                    <dl class="grid max-w-xl grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 sm:gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+                        <div class="relative pl-10 sm:pl-16" data-aos="fade-up" data-aos-delay="100">
+                            <dt class="text-sm sm:text-base font-bold leading-6 sm:leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-wifi text-orange-600 text-sm sm:text-lg"></i>
                                 </div>
                                 Wi-Fi Kecepatan Tinggi
                             </dt>
-                            <dd class="mt-2 text-base leading-7 text-stone-600">Koneksi internet stabil secara gratis cocok untuk menemani rapat online atau waktu nugas Anda.</dd>
+                            <dd class="mt-1 sm:mt-2 text-xs sm:text-base leading-5 sm:leading-7 text-stone-600">Koneksi internet stabil secara gratis cocok untuk menemani rapat online atau waktu nugas Anda.</dd>
                         </div>
-                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="200">
-                            <dt class="text-base font-bold leading-7 text-stone-900">
-                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
-                                    <i class="fas fa-couch text-orange-600 text-lg"></i>
+                        <div class="relative pl-10 sm:pl-16" data-aos="fade-up" data-aos-delay="200">
+                            <dt class="text-sm sm:text-base font-bold leading-6 sm:leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-couch text-orange-600 text-sm sm:text-lg"></i>
                                 </div>
                                 Area Nyaman & Area Merokok
                             </dt>
-                            <dd class="mt-2 text-base leading-7 text-stone-600">Pemisahan area indoor ber-AC penuh dan area outdoor untuk merokok yang sejuk dipayungi daun-daun hijau.</dd>
+                            <dd class="mt-1 sm:mt-2 text-xs sm:text-base leading-5 sm:leading-7 text-stone-600">Pemisahan area indoor ber-AC penuh dan area outdoor untuk merokok yang sejuk dipayungi daun-daun hijau.</dd>
                         </div>
-                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="300">
-                            <dt class="text-base font-bold leading-7 text-stone-900">
-                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
-                                    <i class="fas fa-music text-orange-600 text-lg"></i>
+                        <div class="relative pl-10 sm:pl-16" data-aos="fade-up" data-aos-delay="300">
+                            <dt class="text-sm sm:text-base font-bold leading-6 sm:leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-music text-orange-600 text-sm sm:text-lg"></i>
                                 </div>
                                 Live Music Mingguan
                             </dt>
-                            <dd class="mt-2 text-base leading-7 text-stone-600">Nikmati alunan musik akustik secara langsung setiap malam akhir pekan untuk memeriahkan suasana.</dd>
+                            <dd class="mt-1 sm:mt-2 text-xs sm:text-base leading-5 sm:leading-7 text-stone-600">Nikmati alunan musik akustik secara langsung setiap malam akhir pekan untuk memeriahkan suasana.</dd>
                         </div>
-                        <div class="relative pl-16" data-aos="fade-up" data-aos-delay="400">
-                            <dt class="text-base font-bold leading-7 text-stone-900">
-                                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
-                                    <i class="fas fa-motorcycle text-orange-600 text-lg"></i>
+                        <div class="relative pl-10 sm:pl-16" data-aos="fade-up" data-aos-delay="400">
+                            <dt class="text-sm sm:text-base font-bold leading-6 sm:leading-7 text-stone-900">
+                                <div class="absolute left-0 top-0 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-orange-100 ring-1 ring-orange-200">
+                                    <i class="fas fa-motorcycle text-orange-600 text-sm sm:text-lg"></i>
                                 </div>
                                 Parkir Luas & Aman
                             </dt>
-                            <dd class="mt-2 text-base leading-7 text-stone-600">Tersedia area parkir yang memadai dengan pengawasan cctv 24 jam dengan jasa petugas parkir ahli.</dd>
+                            <dd class="mt-1 sm:mt-2 text-xs sm:text-base leading-5 sm:leading-7 text-stone-600">Tersedia area parkir yang memadai dengan pengawasan cctv 24 jam dengan jasa petugas parkir ahli.</dd>
                         </div>
                     </dl>
                 </div>
@@ -220,8 +223,8 @@
         <div id="scanner" class="bg-orange-600 py-16 sm:py-24 relative overflow-hidden">
             <div class="absolute inset-0 bg-black/10"></div>
             <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 text-center text-white" data-aos="zoom-in">
-                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Pesan Makanan Tanpa Antre</h2>
-                <p class="mt-6 text-lg leading-8 text-orange-50 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">Pesan Makanan Tanpa Antre</h2>
+                <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-orange-50 max-w-2xl mx-auto">
                     Arahkan kamera ke meja Anda, atau klik tombol di bawah untuk membuka pemindai bawaan sistem kami.
                 </p>
                 <div class="mx-auto mt-10 max-w-sm bg-white rounded-3xl p-6 text-stone-900 shadow-xl" data-aos="flip-up" data-aos-delay="200">
@@ -240,12 +243,12 @@
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl text-center mb-16" data-aos="fade-up">
                     <h2 class="text-base font-semibold leading-7 text-orange-600">Kunjungi Kami</h2>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Lokasi & Jam Operasional</p>
+                    <p class="mt-2 text-2xl font-bold tracking-tight text-stone-900 sm:text-4xl">Lokasi & Jam Operasional</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                     <!-- Google Maps Iframe (Kiri, Diperbesar) -->
-                    <div class="lg:col-span-7 rounded-3xl overflow-hidden shadow-lg h-96 lg:h-full min-h-[400px] lg:min-h-[500px]" data-aos="fade-right">
+                    <div class="lg:col-span-7 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg h-64 sm:h-96 lg:h-full min-h-[250px] sm:min-h-[400px] lg:min-h-[500px]" data-aos="fade-right">
                         @if($setting && $setting->map_iframe)
                             <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full">
                                 {!! $setting->map_iframe !!}
@@ -256,9 +259,9 @@
                     </div>
 
                     <!-- Jam Operasional & Kontak (Kanan, Lebih Rapi) -->
-                    <div class="lg:col-span-5 bg-white rounded-3xl shadow-sm ring-1 ring-stone-200 p-6 sm:p-8 flex flex-col justify-center" data-aos="fade-left">
-                        <h3 class="text-xl font-bold text-stone-900 mb-4 border-b pb-3"><i class="far fa-clock text-orange-600 mr-2"></i> Jam Buka</h3>
-                        <ul class="space-y-3 text-stone-700 text-sm sm:text-base">
+                    <div class="lg:col-span-5 bg-white rounded-2xl sm:rounded-3xl shadow-sm ring-1 ring-stone-200 p-4 sm:p-8 flex flex-col justify-center" data-aos="fade-left">
+                        <h3 class="text-lg sm:text-xl font-bold text-stone-900 mb-3 sm:mb-4 border-b pb-2 sm:pb-3"><i class="far fa-clock text-orange-600 mr-2"></i> Jam Buka</h3>
+                        <ul class="space-y-2 sm:space-y-3 text-stone-700 text-xs sm:text-base">
                             @php
                                 $hours = ($setting && is_array($setting->operational_hours)) ? $setting->operational_hours : [
                                     ['day' => 'Senin - Kamis', 'time' => '10:00 - 22:00'],
@@ -268,7 +271,7 @@
                             @endphp
                             @foreach($hours as $index => $hour)
                                 @if(!empty($hour['day']))
-                                <li class="flex justify-between items-center py-2 border-b border-stone-100 border-dashed {{ $index === count($hours) - 1 ? 'text-orange-600' : '' }}">
+                                <li class="flex justify-between items-center py-1.5 sm:py-2 border-b border-stone-100 border-dashed {{ $index === count($hours) - 1 ? 'text-orange-600' : '' }}">
                                     <span>{{ $hour['day'] }}</span>
                                     <span class="font-bold">{{ $hour['time'] }}</span>
                                 </li>
@@ -276,11 +279,11 @@
                             @endforeach
                         </ul>
 
-                        <h3 class="text-xl font-bold text-stone-900 mb-4 border-b pb-3 mt-8"><i class="fas fa-phone-alt text-orange-600 mr-2"></i> Kontak Reservasi</h3>
-                        <div class="space-y-3 text-stone-700 text-sm sm:text-base">
-                            <p class="flex items-start gap-3"><i class="fab fa-whatsapp text-green-500 text-lg w-5 mt-0.5"></i> <span>+{{ $setting->contact_whatsapp ?? '62 822 5555 7777' }}</span></p>
-                            <p class="flex items-start gap-3"><i class="fab fa-instagram text-pink-500 text-lg w-5 mt-0.5"></i> <span>{{ $setting->contact_instagram ?? '@qrasa.cafe' }}</span></p>
-                            <p class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-red-500 text-lg w-5 mt-0.5"></i> <span>{{ $setting->store_address ?? 'Jl. Jend. Sudirman Kav 1, Jakarta Selatan' }}</span></p>
+                        <h3 class="text-lg sm:text-xl font-bold text-stone-900 mb-3 sm:mb-4 border-b pb-2 sm:pb-3 mt-6 sm:mt-8"><i class="fas fa-phone-alt text-orange-600 mr-2"></i> Kontak Reservasi</h3>
+                        <div class="space-y-2 sm:space-y-3 text-stone-700 text-xs sm:text-base">
+                            <p class="flex items-start gap-2 sm:gap-3"><i class="fab fa-whatsapp text-green-500 text-base sm:text-lg w-4 sm:w-5 mt-0.5"></i> <span>+{{ $setting->contact_whatsapp ?? '62 822 5555 7777' }}</span></p>
+                            <p class="flex items-start gap-2 sm:gap-3"><i class="fab fa-instagram text-pink-500 text-base sm:text-lg w-4 sm:w-5 mt-0.5"></i> <span>{{ $setting->contact_instagram ?? '@qrasa.cafe' }}</span></p>
+                            <p class="flex items-start gap-2 sm:gap-3"><i class="fas fa-map-marker-alt text-red-500 text-base sm:text-lg w-4 sm:w-5 mt-0.5"></i> <span>{{ $setting->store_address ?? 'Jl. Jend. Sudirman Kav 1, Jakarta Selatan' }}</span></p>
                         </div>
                     </div>
                 </div>
@@ -290,8 +293,8 @@
             @php
                 $waLink = $setting && $setting->contact_whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $setting->contact_whatsapp) : 'https://wa.me/6282255557777';
             @endphp
-            <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 p-4 text-white shadow-lg hover:bg-green-600 hover:scale-110 transition-transform duration-300 flex items-center justify-center group" aria-label="Reservasi WhatsApp">
-                <i class="fab fa-whatsapp text-4xl"></i>
+            <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 w-14 h-14 sm:w-16 sm:h-16 text-white shadow-lg hover:bg-green-600 hover:scale-110 transition-transform duration-300 flex items-center justify-center group" aria-label="Reservasi WhatsApp">
+                <i class="fab fa-whatsapp text-3xl sm:text-4xl"></i>
             </a>
         </div>
     </main>

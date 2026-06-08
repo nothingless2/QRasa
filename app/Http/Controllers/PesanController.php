@@ -16,7 +16,7 @@ class PesanController extends Controller
         $user = auth()->user();
 
         // Tampilkan semua pesanan tanpa filter berdasarkan user
-        $query = Pesan::with(['menus', 'meja', 'user']);
+        $query = Pesan::with(['menus', 'meja']);
 
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
@@ -32,9 +32,6 @@ class PesanController extends Controller
                 $q->where('id', 'like', "%{$search}%")
                   ->orWhereHas('meja', function(\Illuminate\Database\Eloquent\Builder $mejaQuery) use ($search) {
                       $mejaQuery->where('nomor_meja', 'like', "%{$search}%");
-                  })
-                  ->orWhereHas('user', function(\Illuminate\Database\Eloquent\Builder $userQuery) use ($search) {
-                      $userQuery->where('name', 'like', "%{$search}%");
                   });
             });
         }
@@ -227,7 +224,7 @@ class PesanController extends Controller
     public function strukKasir(Pesan $pesan)
     {
         // Eager load relationships to prevent N+1 Performance Issues on receipt loops
-        $pesan->load(['menus', 'meja', 'user']);
+        $pesan->load(['menus', 'meja']);
 
         return view('pesan.struk', compact('pesan'));
     }

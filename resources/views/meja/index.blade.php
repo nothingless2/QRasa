@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-admin-sidebar />
 
-    <main class="flex-1 ml-64 p-8 bg-gray-50">
+    <main class="flex-1 lg:ml-64 p-4 lg:p-8 bg-gray-50">
           <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Meja</h1>
@@ -106,3 +106,4 @@
         </script>
     </main>
 </x-app-layout>
+

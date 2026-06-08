@@ -49,7 +49,7 @@
     <div style="font-size: 11px;">
         <div>No: #{{ $pesan->id }}</div>
         <div>Tgl: {{ $pesan->created_at->format('d/m/Y H:i') }}</div>
-        <div>Kasir: {{ $pesan->user->name ?? 'Kasir' }}</div>
+        <div>Kasir: {{ auth()->user()->name ?? 'Kasir' }}</div>
         <div>Meja: {{ $pesan->meja->nomor_meja ?? 'Bawa Pulang' }}</div>
     </div>
     
