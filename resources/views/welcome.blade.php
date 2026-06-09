@@ -168,7 +168,7 @@
 
                     @php
                         $menuCount = $setting->featured_menu_count ?? 3;
-                        $menus = \App\Models\menu::inRandomOrder()->take($menuCount)->get();
+                        $menus = \App\Models\Menu::inRandomOrder()->take($menuCount)->get();
                     @endphp
 
                     @forelse($menus as $index => $item)
