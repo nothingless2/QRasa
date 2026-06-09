@@ -66,9 +66,11 @@ class SecurityHeaders
 
         $csp = implode('; ', [
             "default-src 'self'",
-            // unsafe-inline needed for Vite-injected inline scripts & Alpine.js x-data handlers
-            // unsafe-eval is NOT needed: Alpine.js v3 is bundled via Vite (pre-compiled, no runtime eval)
-            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com",
+            // Alpine.js v3 uses new Function() at runtime to evaluate template expressions
+            // (x-data, x-show, @click, etc.) — this requires 'unsafe-eval' regardless of
+            // whether Alpine is bundled via Vite/npm or loaded from CDN.
+            // To remove unsafe-eval, switch to @alpinejs/csp build (has expression limitations).
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com",
             "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com",
             "font-src 'self' data: https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com",
             "img-src 'self' data: blob: https:",
