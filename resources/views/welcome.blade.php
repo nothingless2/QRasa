@@ -11,57 +11,61 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('img/Logo/LogoKantin.png') }}"/>
 
-    <!-- DNS Prefetch & Preconnect (reduces connection latency for CDNs) -->
+    <!-- DNS Prefetch & Preconnect -->
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
 
-    <!-- Fonts -->
+    <!-- App CSS (Vite bundled — Tailwind) — load first as it is critical -->
+    @vite(['resources/css/app.css'])
+
+    <!-- Fonts with font-display:swap (text visible during font load) -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome (icons — must be synchronous for content to render correctly) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome — non-blocking (icons are NOT critical for first paint) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          media="print" onload="this.media='all'; this.onload=null;">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
-    <!-- AOS Animation Library CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS Animation CSS — non-blocking (animation is progressive enhancement) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+          media="print" onload="this.media='all'; this.onload=null;">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
 
-    <!-- Critical inline style -->
-    <style>html { scroll-behavior: smooth; }</style>
+    @php
+        $heroUrl = ($setting && $setting->hero_bg)
+            ? Storage::url($setting->hero_bg)
+            : 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&fm=webp';
+        $heroUrlMobile = ($setting && $setting->hero_bg)
+            ? Storage::url($setting->hero_bg)
+            : 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=768&q=65&fm=webp';
+    @endphp
+    <!-- Preload LCP hero image — biggest content element on screen (critical for LCP score) -->
+    <link rel="preload" as="image"
+          href="{{ $heroUrlMobile }}"
+          imagesrcset="{{ $heroUrlMobile }} 768w, {{ $heroUrl }} 1920w"
+          imagesizes="100vw"
+          fetchpriority="high">
 
-    <!-- App CSS (Vite bundled — Tailwind) -->
-    @vite(['resources/css/app.css'])
+    <!-- Critical inline styles (prevents FOUC for above-the-fold content) -->
+    <style>
+        html { scroll-behavior: smooth; }
+        #beranda { background-color: #1c1917; min-height: 100svh; }
+        img { max-width: 100%; height: auto; }
+    </style>
+
     @if($setting && $setting->google_analytics_id)
-        <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $setting->google_analytics_id }}"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '{{ $setting->google_analytics_id }}');
-        </script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $setting->google_analytics_id }}');</script>
     @endif
-
     @if($setting && $setting->facebook_pixel_id)
-        <!-- Meta Pixel Code -->
-        <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '{{ $setting->facebook_pixel_id }}');
-        fbq('track', 'PageView');
-        </script>
-        <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id={{ $setting->facebook_pixel_id }}&ev=PageView&noscript=1"
-        /></noscript>
-        <!-- End Meta Pixel Code -->
+        <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','{{ $setting->facebook_pixel_id }}');fbq('track','PageView');</script>
+        <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ $setting->facebook_pixel_id }}&ev=PageView&noscript=1"/></noscript>
     @endif
 </head>
 <body class="antialiased bg-stone-50 text-gray-800 font-sans overflow-x-hidden">
@@ -105,7 +109,16 @@
     <main>
         <!-- Hero Section -->
         <div id="beranda" class="relative isolate overflow-hidden bg-stone-900 h-screen flex items-center">
-            <img src="{{ $setting && $setting->hero_bg ? Storage::url($setting->hero_bg) : 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' }}" alt="Cafe Background" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-40">
+            <!-- Hero BG image — fetchpriority=high + explicit dimensions prevents layout shift and improves LCP -->
+            <img src="{{ $heroUrlMobile }}"
+                 srcset="{{ $heroUrlMobile }} 768w, {{ $heroUrl }} 1920w"
+                 sizes="100vw"
+                 alt="Cafe Background"
+                 width="1920" height="1080"
+                 fetchpriority="high"
+                 loading="eager"
+                 decoding="async"
+                 class="absolute inset-0 -z-10 h-full w-full object-cover opacity-40">
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true"></div>
             <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 w-full">
                 <div class="mx-auto max-w-3xl text-center" data-aos="zoom-in">
@@ -134,7 +147,12 @@
                             <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-stone-600 whitespace-pre-line">{{ $setting->about_text ?? "Berdiri dengan visi untuk menyajikan masakan berkualitas dengan harga sahabat. Kami menggunakan bahan-bahan segar setiap harinya untuk memastikan setiap gigitan dan tegukan memberikan kepuasan tersendiri.\n\nKini kami mengadopsi teknologi digital untuk masa depan pesanan, sehingga pelanggan hanya perlu memindai QR Code di meja, memilih menu, dan pesanan akan langsung diantar oleh pelayan kami yang ramah." }}</p>
                         </div>
                     </div>
-                    <img src="{{ $setting && $setting->about_image ? Storage::url($setting->about_image) : 'https://cdn.pixabay.com/photo/2016/08/21/14/49/cafe-1609795_1280.jpg' }}" alt="Tentang QRasa" class="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-xl ring-1 ring-stone-400/10" data-aos="fade-left">
+                    <img src="{{ $setting && $setting->about_image ? Storage::url($setting->about_image) : 'https://cdn.pixabay.com/photo/2016/08/21/14/49/cafe-1609795_1280.jpg' }}"
+                         alt="Tentang QRasa"
+                         width="800" height="500"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-xl ring-1 ring-stone-400/10" data-aos="fade-left">
                 </div>
             </div>
         </div>
@@ -157,7 +175,12 @@
                         <!-- Item -->
                         <div class="flex flex-col bg-white rounded-2xl sm:rounded-3xl shadow-sm ring-1 ring-stone-200 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                             @if($item->gambar)
-                                <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->nama }}" class="h-32 sm:h-48 w-full object-cover">
+                                <img src="{{ Storage::url($item->gambar) }}"
+                                     alt="{{ $item->nama }}"
+                                     width="400" height="192"
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="h-32 sm:h-48 w-full object-cover">
                             @else
                                 <div class="h-32 sm:h-48 w-full bg-stone-100 flex items-center justify-center text-stone-400">
                                     <i class="fas fa-utensils text-3xl sm:text-4xl"></i>
