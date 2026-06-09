@@ -128,7 +128,7 @@
 
         <div class="flex-1">
             <!-- Main Content -->
-            <main class="flex-1 p-4 ">
+            <main class="flex-1 min-w-0 p-4 ">
                 <!-- Search -->
                 <div class="container mx-auto px-4 my-8">
                     <div class="max-w-2xl mx-auto relative">

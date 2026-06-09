@@ -68,32 +68,38 @@
         </script>
         @endif
 
-        <!-- Navbar Kasir (Bustom Navbar Tanpa Sidebar Admin) -->
-        <div class="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-6 z-10">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('pesan.index') }}" class="text-gray-700 hover:text-orange-600 transition" title="Kembali ke Daftar Pesanan">
-                    <i class="fas fa-arrow-left text-xl"></i>
-                </a>
-                <h1 class="text-xl font-bold text-gray-800">QRasa Layar Kasir</h1>
+        <!-- Navbar Kasir (2-Row Responsive) -->
+        <div class="fixed top-0 left-0 right-0 bg-white shadow z-10">
+            <!-- Row 1: Brand + User -->
+            <div class="flex items-center justify-between px-4 sm:px-6 h-12 border-b border-gray-100">
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="{{ route('pesan.index') }}" class="text-gray-600 hover:text-orange-600 transition" title="Kembali ke Daftar Pesanan">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
+                    <h1 class="text-base font-bold text-gray-800">QRasa Layar Kasir</h1>
+                </div>
+                <span class="text-gray-600 font-medium flex items-center text-sm">
+                    <i class="fas fa-user-circle mr-2 text-orange-500"></i>{{ auth()->user()->name }}
+                </span>
             </div>
-            <div class="flex items-center space-x-4">
-                <button onclick="document.getElementById('activeOrdersModal').classList.remove('hidden')" class="bg-indigo-50 text-indigo-700 font-bold px-4 py-1.5 rounded-lg border border-indigo-200 hover:bg-indigo-100 transition shadow-sm flex items-center">
-                    <i class="fas fa-list-alt mr-2"></i> Pesanan Aktif (<span x-text="'{{ $activeOrders->count() }}'"></span>)
+            <!-- Row 2: Action Buttons -->
+            <div class="flex items-center gap-2 px-4 sm:px-6 h-10 overflow-x-auto" style="scrollbar-width:none;">
+                <button onclick="document.getElementById('activeOrdersModal').classList.remove('hidden')" class="shrink-0 bg-indigo-600 text-white font-bold px-3 py-1 rounded-md hover:bg-indigo-700 transition flex items-center whitespace-nowrap text-xs">
+                    <i class="fas fa-list-alt mr-1.5"></i> Pesanan Aktif ({{ $activeOrders->count() }})
                 </button>
                 @if($activeShift)
-                <button onclick="document.getElementById('expenseModal').classList.remove('hidden')" class="bg-yellow-50 text-yellow-700 font-bold px-4 py-1.5 rounded-lg border border-yellow-200 hover:bg-yellow-100 transition shadow-sm flex items-center">
-                    <i class="fas fa-receipt mr-2"></i> Pengeluaran
+                <button onclick="document.getElementById('expenseModal').classList.remove('hidden')" class="shrink-0 bg-yellow-500 text-white font-bold px-3 py-1 rounded-md hover:bg-yellow-600 transition flex items-center whitespace-nowrap text-xs">
+                    <i class="fas fa-receipt mr-1.5"></i> Catat Pengeluaran
                 </button>
-                <button onclick="document.getElementById('endShiftModal').classList.remove('hidden')" class="bg-red-50 text-red-600 font-bold px-4 py-1.5 rounded-lg border border-red-200 hover:bg-red-100 transition shadow-sm flex items-center">
-                    <i class="fas fa-flag-checkered mr-2"></i> Tutup Shift
+                <button onclick="document.getElementById('endShiftModal').classList.remove('hidden')" class="shrink-0 bg-red-600 text-white font-bold px-3 py-1 rounded-md hover:bg-red-700 transition flex items-center whitespace-nowrap text-xs">
+                    <i class="fas fa-flag-checkered mr-1.5"></i> Tutup Shift
                 </button>
                 @endif
-                <span class="text-gray-600 font-medium"><i class="fas fa-user-circle mr-2 text-orange-500"></i>{{ auth()->user()->name }}</span>
             </div>
         </div>
 
-        <!-- Left Content: Menu Grid (Full on mobile, 70% on lg) -->
-        <div class="w-full lg:w-8/12 pt-16 flex flex-col h-full bg-gray-50 border-r border-gray-300">
+        <!-- Left Content: Menu Grid -->
+        <div class="w-full lg:w-7/12 pt-[88px] flex flex-col h-full bg-gray-50 border-r border-gray-300">
             <!-- Category Filter & Search -->
             <div class="bg-white p-4 shadow-sm z-0">
                 <div class="flex space-x-2 overflow-x-auto pb-2" style="scrollbar-width: none;">
@@ -157,8 +163,8 @@
             </div>
         </div>
 
-        <!-- Right Content: Cart Area (30%) -->
-        <div class="w-full lg:w-4/12 pt-16 flex flex-col h-full bg-white shadow-[-10px_0_20px_-5px_rgba(0,0,0,0.05)] z-20 absolute lg:relative right-0 transition-transform duration-300"
+        <!-- Right Content: Cart Area (5/12 on desktop) -->
+        <div class="w-full lg:w-5/12 pt-[88px] flex flex-col h-full bg-white shadow-[-10px_0_20px_-5px_rgba(0,0,0,0.05)] z-20 absolute lg:relative right-0 transition-transform duration-300"
              :class="{'translate-x-0': cartOpen, 'translate-x-full lg:translate-x-0': !cartOpen}">
             
             <!-- Mobile Cart Closer -->
@@ -166,12 +172,12 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
 
-            <!-- Order Type / Table Selection bg-orange-50-->
-            <div class="p-4 md:p-5 border-b border-gray-100 bg-gray-50">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Penempatan (*Wajib)</label>
+            <!-- Order Type / Table Selection -->
+            <div class="px-4 pt-4 pb-3 border-b border-gray-100 bg-white shrink-0">
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Penempatan (*Wajib)</label>
                 <div class="relative">
-                    <i class="fas fa-map-marker-alt absolute left-3 top-3 text-orange-500"></i>
-                    <select x-model="selectedMeja" class="w-full pl-9 border-gray-400 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-2.5 font-medium text-gray-700">
+                    <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-orange-500 text-sm"></i>
+                    <select x-model="selectedMeja" class="w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-2 text-sm font-medium text-gray-700">
                         <option value="" disabled selected>-- Pilih Meja / Posisi --</option>
                         <option value="bawa_pulang">🛒 Bawa Pulang / Takeaway</option>
                         @foreach($mejas as $meja)
@@ -181,124 +187,101 @@
                 </div>
             </div>
 
-            <!-- Cart Items List -->
-            <div class="flex-1 overflow-y-auto p-4 md:p-5 space-y-3 bg-gray-50/50">
+            <!-- Totals Summary (TOP) -->
+            <div class="px-4 pt-3 pb-2 border-b border-gray-100 bg-gray-50 shrink-0">
+                <div class="space-y-1 text-xs text-gray-500 mb-2">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span x-text="'Rp' + formatPrice(grossTotal)"></span>
+                    </div>
+                    <div class="flex justify-between text-green-600">
+                        <span>Diskon</span>
+                        <span x-text="'- Rp' + formatPrice(totalDiscount)"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Servis ({{ $setting ? $setting->service_percent : 5 }}%)</span>
+                        <span x-text="'Rp' + formatPrice(serviceCharge)"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>PB1 ({{ $setting ? $setting->tax_percent : 11 }}%)</span>
+                        <span x-text="'Rp' + formatPrice(pajakPb1)"></span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-t border-dashed border-gray-300 pt-2">
+                    <span class="font-black text-base text-gray-800">TOTAL</span>
+                    <span class="font-black text-xl text-orange-600" x-text="'Rp' + formatPrice(grandTotal)"></span>
+                </div>
+            </div>
+
+            <!-- Payment Method (TOP, below totals) -->
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-white shrink-0">
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Pilih Pembayaran</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <button @click="paymentMethod = 'tunai'" :class="paymentMethod === 'tunai' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-money-bill-wave text-[10px]"></i> Tunai
+                    </button>
+                    <button @click="paymentMethod = 'transfer'" :class="paymentMethod === 'transfer' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-exchange-alt text-[10px]"></i> Transfer
+                    </button>
+                    <button @click="paymentMethod = 'qris'" :class="paymentMethod === 'qris' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-qrcode text-[10px]"></i> QRIS
+                    </button>
+                    <button @click="paymentMethod = 'gopay'" :class="paymentMethod === 'gopay' ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-600 border-gray-200 hover:border-green-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-wallet text-[10px]"></i> GoPay
+                    </button>
+                    <button @click="paymentMethod = 'ovo'" :class="paymentMethod === 'ovo' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-wallet text-[10px]"></i> OVO
+                    </button>
+                    <button @click="paymentMethod = 'dana'" :class="paymentMethod === 'dana' ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-wallet text-[10px]"></i> DANA
+                    </button>
+                    <button @click="paymentMethod = 'shopeepay'" :class="paymentMethod === 'shopeepay' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'" class="flex items-center gap-1 px-2.5 py-1 border rounded-full text-[11px] font-semibold transition">
+                        <i class="fas fa-wallet text-[10px]"></i> ShopeePay
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cart Items List (MIDDLE, scrollable) -->
+            <div class="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50/50 min-h-0">
                 <template x-if="cart.length === 0">
-                    <div class="flex flex-col items-center justify-center h-full text-gray-600">
-                        <img src="{{ asset('img/Shopping-Basket.png') }}" class="w-32 h-32 opacity-20 mb-4 object-contain" alt="Empty" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-shopping-basket text-5xl mb-4 text-gray-200" style="display:none"></i>
-                        <p class="font-bold text-gray-700">Keranjang kasir kosong</p>
-                        <p class="text-sm">Klik menu di daftar untuk menambah</p>
+                    <div class="flex flex-col items-center justify-center h-full text-gray-600 py-6">
+                        <i class="fas fa-shopping-basket text-4xl mb-2 text-gray-200"></i>
+                        <p class="font-bold text-gray-600 text-sm">Keranjang masih kosong</p>
+                        <p class="text-xs text-gray-400">Klik menu di kiri untuk menambah</p>
                     </div>
                 </template>
 
                 <template x-for="(cartItem, index) in cart" :key="cartItem.id">
-                    <div class="flex flex-col bg-white p-3 rounded-xl border border-gray-100 shadow-sm relative pr-10 hover:border-orange-200 transition">
-                        <h4 class="text-sm font-bold text-gray-800 line-clamp-1" x-text="cartItem.name"></h4>
-                        <p class="text-orange-500 font-bold text-sm mt-0.5 mb-2" x-text="'Rp' + formatPrice(cartItem.price)"></p>
-                        
-                        <!-- Notes Input -->
-                        <div class="mb-2">
-                            <div class="flex items-center space-x-1">
-                                <i class="fas fa-pen text-gray-300 text-[10px]"></i>
-                                <input type="text" x-model="cartItem.notes" :placeholder="(cartItem.category || '').toLowerCase().includes('minuman') ? 'Catatan: less sugar, no ice...' : 'Catatan: pedas, tanpa sayur...'" 
-                                    class="w-full text-xs border-0 border-b border-gray-300 focus:border-orange-400 focus:ring-0 py-1 px-0 text-gray-600 placeholder-gray-300 bg-transparent">
-                            </div>
+                    <div class="flex items-center bg-white p-2.5 rounded-xl border border-gray-100 shadow-sm hover:border-orange-200 transition gap-2">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-sm font-bold text-gray-800 leading-snug truncate" x-text="cartItem.name"></h4>
+                            <p class="text-orange-500 font-bold text-xs mt-0.5" x-text="'Rp' + formatPrice(cartItem.price * cartItem.quantity)"></p>
+                            <input type="text" x-model="cartItem.notes"
+                                :placeholder="(cartItem.category || '').toLowerCase().includes('minuman') ? 'less sugar, no ice...' : 'pedas, tanpa sayur...'"
+                                class="w-full text-[11px] border-0 border-b border-gray-200 focus:border-orange-400 focus:ring-0 py-0.5 px-0 text-gray-500 placeholder-gray-300 bg-transparent mt-1">
                         </div>
-                        
-                        <!-- Actions -->
-                        <div class="flex items-center space-x-2 bg-gray-50 rounded-lg p-1 w-fit border border-gray-300">
-                            <button @click="updateQuantity(index, -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:text-red-500 transition border border-gray-300">
-                                <i class="fas fa-minus text-xs"></i>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button @click="updateQuantity(index, -1)" class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-lg text-gray-600 hover:text-red-500 hover:bg-red-50 transition border border-gray-200">
+                                <i class="fas fa-minus text-[10px]"></i>
                             </button>
-                            <span class="w-8 text-center font-bold text-sm text-gray-800" x-text="cartItem.quantity"></span>
-                            <button @click="updateQuantity(index, 1)" class="w-8 h-8 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:text-orange-500 transition border border-gray-300">
-                                <i class="fas fa-plus text-xs"></i>
+                            <span class="w-6 text-center font-black text-sm text-gray-800" x-text="cartItem.quantity"></span>
+                            <button @click="updateQuantity(index, 1)" class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition border border-gray-200">
+                                <i class="fas fa-plus text-[10px]"></i>
+                            </button>
+                            <button @click="removeItem(index)" class="w-7 h-7 flex items-center justify-center text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition ml-1">
+                                <i class="fas fa-trash-alt text-xs"></i>
                             </button>
                         </div>
-
-                        <!-- Trash Button -->
-                        <button @click="removeItem(index)" class="absolute top-4 right-4 text-gray-300 hover:text-red-600 bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 transition">
-                            <i class="fas fa-trash-alt text-sm"></i>
-                        </button>
                     </div>
                 </template>
             </div>
 
-            <!-- Totals & Checkout -->
-            <div class="p-4 md:p-6 border-t border-gray-300 bg-white">
-                <div class="space-y-3 mb-5">
-                    <div class="flex justify-between text-sm text-gray-700 font-medium pb-2 border-b border-gray-100">
-                        <span>Subtotal Item</span>
-                        <span x-text="'Rp' + formatPrice(grossTotal)"></span>
-                    </div>
-                    <div class="flex justify-between text-sm text-green-600 font-medium pb-2 border-b border-gray-100">
-                        <span>Promo / Diskon</span>
-                        <span x-text="'- Rp' + formatPrice(totalDiscount)"></span>
-                    </div>
-                    <div class="flex justify-between text-sm text-gray-600 font-bold">
-                        <span>Subtotal Netto</span>
-                        <span x-text="'Rp' + formatPrice(netSubtotal)"></span>
-                    </div>
-                    <div class="flex justify-between text-sm text-gray-700">
-                        <span>Servis ({{ $setting ? $setting->service_percent : 5 }}%)</span>
-                        <span x-text="'Rp' + formatPrice(serviceCharge)"></span>
-                    </div>
-                    <div class="flex justify-between text-sm text-gray-700 pb-2 border-b border-dashed border-gray-400">
-                        <span>PB1 ({{ $setting ? $setting->tax_percent : 11 }}%)</span>
-                        <span x-text="'Rp' + formatPrice(pajakPb1)"></span>
-                    </div>
-                    <div class="flex justify-between font-black text-2xl text-gray-800 pt-1">
-                        <span>TOTAL</span>
-                        <span x-text="'Rp' + formatPrice(grandTotal)"></span>
-                    </div>
-                </div>
-
-                <div class="mb-5">
-                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-2">Pilih Pembayaran</label>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button @click="paymentMethod = 'tunai'" 
-                                :class="paymentMethod === 'tunai' ? 'bg-orange-50 border-orange-500 text-orange-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-money-bill-wave text-lg mb-1"></i> Tunai
-                        </button>
-                        <button @click="paymentMethod = 'transfer'" 
-                                :class="paymentMethod === 'transfer' ? 'bg-orange-50 border-orange-500 text-orange-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-exchange-alt text-lg mb-1"></i> Transfer
-                        </button>
-                        <button @click="paymentMethod = 'qris'" 
-                                :class="paymentMethod === 'qris' ? 'bg-orange-50 border-orange-500 text-orange-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-qrcode text-lg mb-1"></i> QRIS
-                        </button>
-                        <button @click="paymentMethod = 'gopay'" 
-                                :class="paymentMethod === 'gopay' ? 'bg-green-50 border-green-500 text-green-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-wallet text-lg mb-1"></i> GoPay
-                        </button>
-                        <button @click="paymentMethod = 'ovo'" 
-                                :class="paymentMethod === 'ovo' ? 'bg-purple-50 border-purple-500 text-purple-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-wallet text-lg mb-1"></i> OVO
-                        </button>
-                        <button @click="paymentMethod = 'dana'" 
-                                :class="paymentMethod === 'dana' ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-wallet text-lg mb-1"></i> DANA
-                        </button>
-                        <button @click="paymentMethod = 'shopeepay'" 
-                                :class="paymentMethod === 'shopeepay' ? 'bg-orange-50 border-orange-500 text-orange-700 shadow-sm' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'"
-                                class="border-2 rounded-xl py-2 font-bold text-[10px] transition flex flex-col items-center justify-center text-center col-span-2">
-                            <i class="fas fa-wallet text-lg mb-1"></i> ShopeePay
-                        </button>
-                    </div>
-                </div>
-
-                <button @click="checkout()" 
+            <!-- Checkout Button (PINNED BOTTOM) -->
+            <div class="px-4 py-3 border-t border-gray-200 bg-white shrink-0">
+                <button @click="checkout()"
                         :disabled="cart.length === 0 || isProcessing"
-                        :class="cart.length === 0 ? 'bg-gray-200 text-gray-600 cursor-not-allowed' : (isProcessing ? 'bg-orange-400 cursor-wait text-white' : 'bg-orange-600 text-white hover:bg-orange-700 shadow-lg shadow-orange-600/40 transform hover:-translate-y-0.5 active:translate-y-0')"
-                        class="w-full font-bold py-4 rounded-xl text-lg flex justify-center items-center transition-all">
+                        :class="cart.length === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : (isProcessing ? 'bg-orange-400 cursor-wait text-white' : 'bg-orange-600 text-white hover:bg-orange-700 shadow-lg shadow-orange-500/30 active:scale-[0.99]')"
+                        class="w-full font-bold py-3 rounded-xl text-base flex justify-center items-center transition-all">
                     <span x-show="!isProcessing"><i class="fas fa-check-circle mr-2"></i> Proses Bayar</span>
                     <span x-show="isProcessing"><i class="fas fa-spinner fa-spin mr-2"></i> Memproses...</span>
                 </button>

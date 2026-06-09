@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="overflow-x-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,7 +50,7 @@
         <!-- End Meta Pixel Code -->
     @endif
 </head>
-<body class="antialiased bg-stone-50 text-gray-800 font-sans">
+<body class="antialiased bg-stone-50 text-gray-800 font-sans overflow-x-hidden">
 
     <!-- Navbar -->
     <header class="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
@@ -76,12 +76,12 @@
 
             <!-- Right Actions -->
             <div class="flex flex-1 justify-end gap-2 sm:gap-3 items-center">
-                <a href="#scanner" class="hidden lg:inline-flex items-center justify-center rounded-md bg-orange-100 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-200 transition"><i class="fas fa-qrcode mr-2"></i> Pindai Meja</a>
+                <a href="#scanner" class="hidden lg:inline-flex items-center justify-center rounded-md bg-orange-100 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-200 transition shrink-0"><i class="fas fa-qrcode mr-2"></i> Pindai Meja</a>
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/pesan') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Dashboard <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
+                        <a href="{{ url('/pesan') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition shrink-0">Dashboard <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
                     @else
-                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition">Log in <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 transition shrink-0">Log in <span aria-hidden="true" class="hidden sm:inline-block ml-2">&rarr;</span></a>
                     @endauth
                 @endif
             </div>
@@ -288,14 +288,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- WhatsApp Floating Button -->
-            @php
-                $waLink = $setting && $setting->contact_whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $setting->contact_whatsapp) : 'https://wa.me/6282255557777';
-            @endphp
-            <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 w-14 h-14 sm:w-16 sm:h-16 text-white shadow-lg hover:bg-green-600 hover:scale-110 transition-transform duration-300 flex items-center justify-center group" aria-label="Reservasi WhatsApp">
-                <i class="fab fa-whatsapp text-3xl sm:text-4xl"></i>
-            </a>
         </div>
     </main>
 
@@ -391,5 +383,13 @@
             AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 50 });
         });
     </script>
+
+    <!-- WhatsApp Floating Button -->
+    @php
+        $waLink = $setting && $setting->contact_whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $setting->contact_whatsapp) : 'https://wa.me/6282255557777';
+    @endphp
+    <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 w-14 h-14 sm:w-16 sm:h-16 text-white shadow-lg hover:bg-green-600 hover:scale-110 transition-transform duration-300 flex items-center justify-center group" aria-label="Reservasi WhatsApp">
+        <i class="fab fa-whatsapp text-3xl sm:text-4xl"></i>
+    </a>
 </body>
 </html>

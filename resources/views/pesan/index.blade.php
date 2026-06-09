@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-50">
         <x-admin-sidebar />
-        <main class="flex-1 lg:ml-64 p-4 lg:p-8">
+        <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8">
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div class="mb-8">
@@ -468,4 +468,5 @@
         </main>
     </div>
 </x-app-layout>
+
 

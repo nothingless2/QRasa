@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-admin-sidebar />
 
-    <main class="flex-1 lg:ml-64 p-4 lg:p-8 bg-gray-50 min-h-screen">
+    <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
@@ -25,7 +25,7 @@
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-300 overflow-hidden">
-                <div class="p-6 overflow-x-auto">
+                <div class="p-4 md:p-6 overflow-x-auto">
                     <table class="w-full text-left border-collapse" id="shiftTable">
                         <thead>
                             <tr class="bg-gray-50 text-gray-700 border-b border-gray-300 text-sm">
@@ -109,4 +109,5 @@
         </div>
     </main>
 </x-app-layout>
+
 

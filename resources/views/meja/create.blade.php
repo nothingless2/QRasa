@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-admin-sidebar />
 
-    <main class="flex-1 lg:ml-64 p-4 lg:p-8">
+    <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8">
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Meja Baru</h1>
         </div>
@@ -25,4 +25,5 @@
         </div>
     </main>
 </x-app-layout>
+
 

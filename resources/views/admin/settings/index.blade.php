@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-admin-sidebar />
 
-    <main class="flex-1 lg:ml-64 p-4 lg:p-8 bg-gray-50 min-h-screen">
+    <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8 bg-gray-50 min-h-screen">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Pengaturan Sistem Dasar</h1>
@@ -298,4 +298,5 @@
         </div>
     </main>
 </x-app-layout>
+
 

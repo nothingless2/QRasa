@@ -4,7 +4,7 @@
         <!-- Top Navbar KDS -->
         <div class="h-16 bg-gray-800 shadow flex items-center justify-between px-6 flex-shrink-0 border-b border-gray-700">
             <div class="flex items-center space-x-4">
-                <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-white transition" title="Keluar dari KDS">
+                <a href="{{ route('pesan.index') }}" class="text-gray-600 hover:text-white transition" title="Kembali ke Pesanan">
                     <i class="fas fa-arrow-left text-xl"></i>
                 </a>
                 <h1 class="text-xl font-bold text-white tracking-widest uppercase">

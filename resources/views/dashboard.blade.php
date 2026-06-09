@@ -2,7 +2,7 @@
     <x-admin-sidebar />
 
     <!-- Main Content -->
-    <main class="flex-1 lg:ml-64 p-4 lg:p-8 bg-gray-50">
+    <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8 bg-gray-50">
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Penjualan</h1>
@@ -218,4 +218,5 @@
         </script>
     @endpush
 </x-app-layout>
+
 

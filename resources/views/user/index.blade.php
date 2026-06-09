@@ -3,7 +3,7 @@
         <x-admin-sidebar />
 
         <!-- Main Content -->
-        <main class="flex-1 lg:ml-64 p-4 lg:p-8">
+        <main class="flex-1 min-w-0 lg:ml-64 p-4 lg:p-8">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Daftar User</h1>
@@ -11,11 +11,11 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="mb-6 flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-auto">
                         <input type="text" id="searchInput" placeholder="Cari user..."
-                            class="w-64 pl-10 pr-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-600 focus:border-orange-600 text-sm"
+                            class="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-600 focus:border-orange-600 text-sm"
                             onkeyup="searchTable()">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-600"></i>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <a href="{{ route('user.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-600/90 transition-colors duration-150">
+                    class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-600/90 transition-colors duration-150">
                     <i class="fas fa-plus mr-2"></i>
                     <span>Tambah User</span>
                 </a>
@@ -47,7 +47,7 @@
 
             <!-- User Table -->
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div class="p-6">
+                <div class="p-4 md:p-6 overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -148,4 +148,6 @@
         }
     </script>
 </x-app-layout>
+
+
 
