@@ -379,31 +379,19 @@
                         Swal.fire({ icon: 'error', title: 'Oops...', text: 'Mohon masukkan nomor meja yang valid.' });
                     }
                 },
-                async filterByKategori(kategori) {
+                filterByKategori(kategori) {
                     this.selectedKategori = kategori;
-                    const url = new URL('{{ route('menu.show') }}');
+                    // Update URL without reloading (for bookmarking/sharing)
+                    const url = new URL(window.location.href);
                     if (kategori) {
                         url.searchParams.set('kategori', kategori);
+                    } else {
+                        url.searchParams.delete('kategori');
                     }
                     if (this.mejaId) {
                         url.searchParams.set('meja_id', this.mejaId);
                     }
-
-                    try {
-                        const response = await fetch(url.toString(), {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'Accept': 'application/json'
-                            }
-                        });
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        const data = await response.json();
-                        this.menuItems = data.menu;
-                        window.history.pushState({}, '', url.toString());
-                    } catch (error) {
-                        console.error('Error fetching menu items:', error);
-                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal memuat menu. Silakan coba lagi.' });
-                    }
+                    window.history.pushState({}, '', url.toString());
                 },
                 addToCart(item) {
                     if (item.stok <= 0) {
@@ -522,12 +510,23 @@
                     });
                 },
                 filteredMenuItems() {
-                    if (!this.searchQuery) {
-                        return this.menuItems;
+                    let items = this.menuItems;
+
+                    // Filter by selected category (client-side, instant)
+                    if (this.selectedKategori) {
+                        items = items.filter(item => item.category === this.selectedKategori);
                     }
-                    return this.menuItems.filter(item =>
-                        item.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-                    );
+
+                    // Filter by search query
+                    if (this.searchQuery) {
+                        const q = this.searchQuery.toLowerCase();
+                        items = items.filter(item =>
+                            item.name.toLowerCase().includes(q) ||
+                            (item.description && item.description.toLowerCase().includes(q))
+                        );
+                    }
+
+                    return items;
                 },
                 groupedMenuItems() {
                     const items = this.filteredMenuItems();
