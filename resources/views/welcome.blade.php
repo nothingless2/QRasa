@@ -5,20 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @php $setting = \App\Models\Setting::first(); @endphp
     <title>{{ $setting ? $setting->store_name : 'Kantin QRasa' }} - Nikmati Sensasi Rasa Terbaik</title>
+    <meta name="description" content="{{ $setting ? $setting->store_name : 'QRasa' }} — Restoran dengan menu pilihan terbaik. Scan QR dan pesan langsung dari meja Anda!">
+    <meta name="theme-color" content="#ea580c">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/Logo/LogoKantin.png') }}"/>
+
+    <!-- DNS Prefetch & Preconnect (reduces connection latency for CDNs) -->
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://unpkg.com">
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ asset('img/Logo/LogoKantin.png') }}"/>
-    <!-- Scripts & Styles -->
-    <style>
-        html { scroll-behavior: smooth; }
-    </style>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    @vite(['resources/css/app.css'])
 
+    <!-- Font Awesome (icons — must be synchronous for content to render correctly) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Critical inline style -->
+    <style>html { scroll-behavior: smooth; }</style>
+
+    <!-- App CSS (Vite bundled — Tailwind) -->
+    @vite(['resources/css/app.css'])
     @if($setting && $setting->google_analytics_id)
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $setting->google_analytics_id }}"></script>

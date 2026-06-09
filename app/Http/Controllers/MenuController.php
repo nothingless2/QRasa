@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,39 +37,44 @@ class MenuController extends Controller
         return view('menu.index', compact('menu', 'kategori'));
     }
 
-    // Public view for customers
+    // Public view for customers — cached for performance
     public function show(Request $request)
     {
-        $query = Menu::query();
-        $kategori = Menu::select('kategori')->distinct()->pluck('kategori');
-        $historyPesanan = collect();
+        $kategoriFilter = $request->kategori;
+        $selectedKategori = $kategoriFilter;
 
-        // Filter by category if present
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
-        }
+        // Cache category list for 60s (rarely changes)
+        $kategori = Cache::remember('menu_kategori', 60, function () {
+            return Menu::select('kategori')->distinct()->pluck('kategori');
+        });
 
-        $selectedKategori = $request->kategori;
-        $menu = $query->get();
+        // Build filtered menu query using indexed columns
+        $cacheKey = 'menu_list_' . ($kategoriFilter ?? 'all');
 
-        // Pindahkan transformasi data ke controller
+        $menu = Cache::remember($cacheKey, 60, function () use ($kategoriFilter) {
+            return Menu::query()
+                ->when($kategoriFilter, fn($q) => $q->where('kategori', $kategoriFilter))
+                ->orderBy('nama')
+                ->get();
+        });
+
         $formattedMenu = $menu->map(function ($item) {
             return [
-                'id' => $item->id,
-                'name' => $item->nama,
+                'id'          => $item->id,
+                'name'        => $item->nama,
                 'description' => $item->deskripsi,
-                'price' => $item->harga,
-                'discount' => $item->diskon ?? 0,
-                'image' => asset('storage/' . $item->gambar),
-                'stok' => $item->stok,
-                'category' => $item->kategori ?? 'Lainnya',
+                'price'       => $item->harga,
+                'discount'    => $item->diskon ?? 0,
+                'image'       => asset('storage/' . $item->gambar),
+                'stok'        => $item->stok,
+                'category'    => $item->kategori ?? 'Lainnya',
             ];
         });
 
+        $historyPesanan = collect();
         if ($request->has('meja_id')) {
             $meja = \App\Models\meja::find($request->meja_id);
             if ($meja) {
-                // Hanya ambil pesanan HARI INI yang BELUM DIBAYAR untuk meja ini
                 $historyPesanan = $meja->pesans()
                     ->whereDate('created_at', \Carbon\Carbon::today())
                     ->where('status_pembayaran', '!=', 'sudah dibayar')
@@ -80,10 +86,10 @@ class MenuController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'menu' => $formattedMenu, // Kembalikan data yang sudah diformat
-                'kategori' => $kategori,
+                'menu'             => $formattedMenu,
+                'kategori'         => $kategori,
                 'selectedKategori' => $selectedKategori,
-                'historyPesanan' => $historyPesanan,
+                'historyPesanan'   => $historyPesanan,
             ]);
         }
 
@@ -120,6 +126,7 @@ class MenuController extends Controller
         }
 
         $menu->save();
+        Cache::flush(); // Invalidate all menu caches after mutation
 
         return redirect()
             ->route('menu.index')
@@ -157,6 +164,7 @@ class MenuController extends Controller
         }
 
         $menu->save();
+        Cache::flush(); // Invalidate all menu caches after mutation
         return redirect()->route('menu.index')->with('success', 'Menu berhasil diperbarui!');
     }
 
@@ -168,6 +176,7 @@ class MenuController extends Controller
             Storage::delete('public/' . $menu->gambar);
         }
         $menu->delete();
+        Cache::flush(); // Invalidate all menu caches after mutation
         return redirect()->back()->with('success', 'Menu berhasil dihapus!');
     }
 }

@@ -13,20 +13,20 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 
 ->withMiddleware(function (Middleware $middleware) {
+        // ── Global Web Middleware (runs on every web request) ──────────────
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\SecurityHeaders::class,
+            \App\Http\Middleware\SanitizeInput::class,
         ]);
 
-    $middleware->web(append: [
-        HandleInertiaRequests::class,
-    ]);
-
-    // Register role-based middleware alias
-    $middleware->alias([
-        'role' => \App\Http\Middleware\CheckRole::class,
-    ]);
-})
+        // ── Middleware Aliases ─────────────────────────────────────────────
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
